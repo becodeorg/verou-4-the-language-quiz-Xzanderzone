@@ -19,5 +19,6 @@ require_once 'classes/Word.php';
 // The LanguageGame class will be your starting point
 $game = new LanguageGame();
 $game->run();
+$game->run();
 
 require 'view.php';
