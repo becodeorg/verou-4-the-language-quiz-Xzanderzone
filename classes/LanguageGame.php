@@ -3,7 +3,6 @@
 class LanguageGame
 {
   private array $words;
-  private Word $currentWord;
 
   public function __construct()
   {
@@ -14,19 +13,29 @@ class LanguageGame
 
   public function run(): void
   {
-    // TODO: check for option A or B
-    if (!isset($this->currentWord)) {
-      // Option A: user visits site first time (or wants a new word)
-      // TODO: select a random word for the user to translate
-      $this->currentWord = $this->words[rand(0, count($this->words) - 1)];
+    // var_dump($_SESSION);
+    // var_dump($_POST);
+    if (isset($_POST["Reset"])) {
+      $_SESSION["currentWord"] = rand(0, count($this->words) - 1);
+      $_SESSION["correct"] = 0;
+      $_SESSION["wrong"] = 0;
+    } else if (!isset($_SESSION["currentWord"])) {
+      //assign a random index from words array to a session/cookie
+      $_SESSION["currentWord"] = rand(0, count($this->words) - 1);
+      $_SESSION["correct"] = 0;
+      $_SESSION["wrong"] = 0;
 
-    } else {
-      // Option B: user has just submitted an answer
-      // TODO: verify the answer (use the verify function in the word class) - you'll need to get the used word from the array first
-      if ($this->currentWord->verify("svenska")) {
-        echo "correct!";
-      } else
+    } else if (isset($_POST["answer"])) {
+      if ($this->words[$_SESSION["currentWord"]]->verify($_POST["answer"])) {
+        echo "correct! setting up new word";
+        $_SESSION["correct"] += 1;
+        $_SESSION["currentWord"] = rand(0, count($this->words) - 1);
+      } else {
+        $_SESSION["wrong"] += 1;
         echo 'wrong! try again';
+      }
     }
+    echo "<br>your word is :" . $this->words[$_SESSION["currentWord"]]->getWord() . '<br>';
+    echo "<br> Total correct: " . $_SESSION["correct"] . ' out of :' . ($_SESSION["wrong"] + $_SESSION["correct"]);
   }
 }
