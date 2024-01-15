@@ -15,6 +15,8 @@
     Your Word: <input type="text" class="answer" name="answer">
     <input type="submit">
     <input type="submit" style="color:red" name="Reset" value="Reset">
+    Username: <input type="text" class="name" name="name">
+    <input type="submit" style="background-color:yellow" name="changeUser" value="changeUser">
   </form>
   <div class="extra">
     <!-- special characters for swedish -->
@@ -38,6 +40,8 @@
       div.appendChild(createButton('å'));
     </script>
   </div>
+  <h2>welcome <?= isset($_SESSION["name"]) ? $_SESSION["name"] : 'anon ' ?></h2>
+  <h3> your score is : <?= $_SESSION['correct'] . ' out of : ' . ($_SESSION["correct"] + $_SESSION["wrong"]) ?></h3>
 </body>
 
 </html>
